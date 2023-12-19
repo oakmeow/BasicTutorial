@@ -11,10 +11,16 @@ public class PickItem : MonoBehaviour
     public TMP_Text scoreText;
     private AudioSource audioSource;
     public AudioClip itemSound;
+    public AudioClip completeSound;
+
+    // ตัวแปรนับจำนวนไอเท็ม
+    int itemCount;
 
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        itemCount = GameObject.FindGameObjectsWithTag("Item").Length;
+        scoreText.text = "Item x " + score.ToString() + "/" + itemCount.ToString();
     }
 
     private void OnTriggerEnter(Collider target)
@@ -24,10 +30,17 @@ public class PickItem : MonoBehaviour
         {
             // อยากให้ทำอะไร
             Destroy(target.gameObject);
-            // เพิ่มค่าตัวแปร Score ขึ้นที่ละ 10 / Item
-            score += 10;
-            scoreText.text = "Item x " + score.ToString();
-            audioSource.PlayOneShot(itemSound);
+            // เพิ่มค่าตัวแปร Score ขึ้นที่ละ 1 / Item
+            score += 1;
+            scoreText.text = "Item x " + score.ToString() + "/" + itemCount.ToString();
+            if (score >= itemCount)
+            {
+                audioSource.PlayOneShot(completeSound);
+            }
+            else
+            {
+                audioSource.PlayOneShot(itemSound);
+            }
         }
     }
 }
