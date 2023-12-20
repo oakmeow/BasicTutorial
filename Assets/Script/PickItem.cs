@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static UnityEngine.GraphicsBuffer;
 
 public class PickItem : MonoBehaviour
@@ -36,11 +37,19 @@ public class PickItem : MonoBehaviour
             if (score >= itemCount)
             {
                 audioSource.PlayOneShot(completeSound);
+                // Level 2
+                StartCoroutine(NextLevel());
             }
             else
             {
                 audioSource.PlayOneShot(itemSound);
             }
         }
+    }
+
+    IEnumerator NextLevel()
+    {
+        yield return new WaitForSeconds(3);
+        SceneManager.LoadScene("Level2");
     }
 }
